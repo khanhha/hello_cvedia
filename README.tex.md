@@ -1,10 +1,18 @@
 Hi Rodrigo,
 
-I am very passionate about the vision of CVEDIA about synthetic data for deep learning. From my deep learning experience, data is the key to a high-quality model. Unfortunately, achieving a good data-set that could cover many edge cases is very hard and expensive in practice. Therefore, I firmly believe that synthetic data will play a crucial role in the future of deep learning, which I want to be a part of.   
+Hi Rodrigo,
 
-However, every journey comes down to a good match. Therefore, to convince you that I can be a valuable addition to the vision of CVEDIA, I wrote an article to describe to you the challenges that I solved so far.
+The vision of CVEDIA about synthetic data really inspires me. From my deep learning experience, data is the key to a high-quality model. Unfortunately, achieving a good data-set that could cover many edge cases is very hard and expensive in practice. Therefore, I firmly believe that synthetic data will play a crucial role in the future of deep learning. That is the reason why I want to be a part of CVEDIA's journey.
 
-From my portfolio, I chose my latest project about images-based 3D human estimation because the skills I gained through this project will be valuable to projects in CVEDIA.  If you want to know more about other deep learning projects that I tackled such as crack detection, 3D textured head estimation, please feel free to let me know.
+I know that every journey comes down to a good match. Therefore, to convince you that I will be a valuable addition to CVEDIA, I wrote an article to show you the deep learning challenges I tacked so far.
+
+From my portfolio, I chose my latest project about images-based 3D human estimation because I believe that the skills I gained through this project will be very useful for projects in CVEDIA.   If you want to know more about other deep learning projects that I tackled such as crack detection, 3D textured head estimation, please feel free to let me know.
+
+Due to the length of the article, I temporarily put it on my Github to make it easier to follow.
+
+Best regards,
+Khanh Ha
+
 
 [](https://kamil-kielczewski.github.io/fractals/mandelbulb.html)
 
