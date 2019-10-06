@@ -108,19 +108,20 @@ In the beginning, I just monitored the training through the mean square error be
 - __integrate the mesh loss__:  from the predicted PCA values, I reconstructed the corresponding 3D mesh during the training and then calculated the mean-square-error between the reconstructed mesh and the corresponding ground-truth mesh. The final loss is the average of PCA loss and mesh loss. This technique help forces the model to predict more accurate vertices instead of just PCA values.
 
 $$
-epoch0:   loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss \\
-epoch10:  loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss \\
-epoch50:  loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss \\
-epoch100: loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss \\
+epoch0:   loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss \newline
+epoch10:  loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss \newline
+epoch50:  loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss \newline
+epoch100: loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss \newline
 $$  
 
 - __dynamic weights for loss terms__: as discussed previously, the final loss is calculated as $ 0.5*PCAloss + 0.5*meshloss$.  However, it is quite intuitive that it is easier for the model to detect underlying trends in PCA values rather than in the 3D mesh vertices. This difficulty could be due to the fact that mesh representation is much more dense and complex than the PCA representation. Therefore, to make the training easier, the loss is designed to force the model to learn PCA values first and toward the end, focus more on mesh loss.
 
 $$
-epoch0:   loss = 0.9*mse{\_}pca{\_}loss + 0.1*mse{\_}mesh{\_}loss \\
-epoch10:  loss = 0.7*mse{\_}pca{\_}loss + 0.3*mse{\_}mesh{\_}loss \\
-epoch50:  loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss \\
-epoch100: loss = 0.2*mse{\_}pca{\_}loss + 0.8*mse{\_}mesh{\_}loss \\
+epoch0:   loss = 0.9*mse{\_}pca{\_}loss + 0.1*mse{\_}mesh{\_}loss \newline
+epoch10:  loss = 0.7*mse{\_}pca{\_}loss + 0.3*mse{\_}mesh{\_}loss \newline
+epoch50:  loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss
+\newline
+epoch100: loss = 0.2*mse{\_}pca{\_}loss + 0.8*mse{\_}mesh{\_}loss \newline
 $$
 
 - __integrate silhouette re-projection loss__: the ultimate target of the training is finding a mesh that best explains the shape of the input silhouettes. Therefore, the best monitoring strategies is comparing the re-projection silhouettes of the predicted mesh with the input silhouettes. This is the most challenging loss term that I implemented in this project because it requires doing a rending in real-time with a correct projection matrix to get the re-projected silhouettes. The idea is outlined below with the loss equation
