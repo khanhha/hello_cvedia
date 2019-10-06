@@ -64,15 +64,15 @@ This challenge is about synthesizing more diverse human shapes, from skinny to f
 
 To resolve this problem, I first trained a PCA model that compresses human representation from the mesh format of 10.000 vertices to 50 principal components. The standard deviations along these principal components form a multivariate Gaussian distribution, which is then randomly sampled to create new PCA parameters representing new human shapes.
 
-Thanks to this technique, I increase the size of training data from 7000 meshes to 100.000 meshes, which reduces the loss on the test-set by 20 percent.
+Thanks to this technique, I increase the size of training data from 7000 meshes to 100.000 meshes, which helps reduce the loss on the test-set by 20 percent.
 
 ### New 3D human pose variants synthesis.
 
-This challenge is about synthesizing new A pose variants to make the model more robust to pose changes in the input images. In reality, the users can stand in different A poses, which causes large changes in 3D output meshes. For example, the output mesh will look fatter if the users tilt left, right, lean backward, or forward.  
+This challenge is about synthesizing new A pose variants to make the model more robust to pose changes in the input images. In reality, the users can stand in different A poses, which causes large changes in 3D output meshes. For example, given the same user, the output mesh will look fatter if he tilts left or right, leans backward, or forward.  
 
-To solve this problem, I apply rigging techniques to create more pose variants per subject randomly. For each mesh, a skeleton of 16 joints is estimated, which is then used to calculate rigging weights for mesh vertices. After that, pose variants are constructed by rotating arm, leg, and spine bones with random angles. The two below figure shows the colorized silhouettes of different poses of the same human subject. Thanks to this approach, the model trained with pose variants become more accurate and invariant to pose.
+To solve this problem, I apply rigging techniques to create more pose variants per subject randomly. For each mesh, a skeleton of 16 joints is estimated, which is then used to calculate rigging weights for mesh vertices. After that, pose variants are constructed by rotating arm, leg, and spine bones with random angles. The two below figure shows the colorized silhouettes of different poses of the same human subject. Thanks to this approach, the model trained with these pose variants become more accurate and invariant to pose.
 
-However, the output meshes still fluctuate a bit. To achieve a more stable result, pose parameters need to be integrated into the model to make it more distinctive.
+However, the output meshes of different poses of the same user still fluctuate a bit. In the future, to achieve a more stable result, pose parameters need to be integrated into the model to make give the model more input information to ease the training.
 
 <p align="center"><img src="/assets/images/3dhm/2019-ca754c68.png" align=middle height=300pt/></p>
 
@@ -81,17 +81,17 @@ However, the output meshes still fluctuate a bit. To achieve a more stable resul
 
 ### Camera parameters
 
-Camera transformation also plays an essential role in forming the pictures. A picture taken with a camera at 1.6 meters over the ground will look different from a photo taken at 1.2 meters. Therefore, to truly reflect these variants in the data-set, I implemented a script to randomly change the camera angles/positions to make the model more robust to perspective changes in the image. The general idea of the technique is shown below. The camera on the right picture is tilted a bit upward than in the left picture.
+Camera transformation also plays an essential role in forming the pictures. A picture taken with a camera at 1.6 meters over the ground will look different from a photo taken at 1.2 meters. Therefore, to truly reflect these factors in the data-set, I implemented a script to randomly adjust the camera angles/positions to make the model more robust to perspective changes in the image. The general idea of the technique is shown below. The camera on the right picture is tilted a bit upward than in the left picture.
 
 <p align="center"><img src="/assets/images/3dhm/2019-2445f9a9.png" align=middle height=150pt/></p>
 
 ## Challenges about training
 
-In this part, I will explain to you challenges related training models which consist of the following topics: model architecture design, loss function design, and learning-rate tuning,
+In this part, I will explain to you challenges about training models which consist of the following topics: model architecture design, loss function design, and learning-rate tuning,
 
 ### Model architecture: combine three models front, side, and fusion.
 
-In the beginning, I used a single model for both front and side pictures, as depicted in the below figure. This model takes in a 2-channel image representing front and side silhouettes and predicts PCA parameters. However, the 3D mesh outputs seem to just match with the contour of the front silhouette, but not of the side silhouette. This result is undesirable because I expect the 3D mesh output to match both profiles.
+In the beginning, I used a single model for both front and side pictures, as depicted in the below figure. This model takes in a 2-channel image representing front and side silhouettes and predicts PCA parameters. However, the 3D mesh outputs seem to match with just the contour of the front silhouette, not of the side silhouette. This result is undesirable because I expect the 3D mesh output to match both profiles.
 
 It took me a while to find out this problem. My theory is that the model is biased toward the front silhouette, which means it just learns very little information from the side silhouette. To test this theory, I wrote code to visualize the feature maps of the model, and it turns out that most of the feature maps have similar shapes like the front silhouette.
 
@@ -158,9 +158,9 @@ $$
 
 As I mentioned in the section "Model Architecture," the front/side models are trained first, and then they are used as the encoder branches for the fusion model.
 
-At first, training the fusion model also involves updating the weights of front/side branches, which are already trained before. However, the fusion model, again, is biased toward the front silhouette. Based on this observation, I tried to freeze the front/side branch weights, which help makes the training more stable.
+At first, training the fusion model also involves updating the weights of front/side branches, which are already trained before. However, the fusion model, again, is biased toward the front silhouette. Based on this observation, I tried to freeze the front/side branch weights during training the fusion model. This helps make the training more stable.
 
-However, this prevents front/side branches from fine-tuning their weights during the training of the fusion model. With this idea in mind, I took advantage of a Pytorch feature to assign a tiny lower learning rate to the front/side branches. This trick could still help them  learn new patterns but not so "out of the box." It is very wonderful to me that this technique helps increase the evaluation metrics by four more percent.
+However, this prevents front/side branches from fine-tuning their weights during the training of the fusion model. With this idea in mind, I took advantage of a Pytorch feature to assign a tiny lower learning rate to the front/side branches. This trick still give front/side branches a chance to adjust their learned weights, but not in a too "out of the box" way. It is very wonderful to me that this technique helps increase the evaluation metrics by four more percent.
 
 # Conclusion
 
