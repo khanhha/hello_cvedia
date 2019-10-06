@@ -94,7 +94,7 @@ To tackle this problem, I separately trained the front and side model and then t
 
 ### Two weight initialization techniques that boost accuracy
 
-At first, I did not pay much attention to weight initialization. Fortunately, after reading [an article] (http://karpathy.github.io/2019/04/25/recipe/) by Karpathy about model training recipes, I tried two weight initialization techniques.
+At first, I did not pay much attention to weight initialization. Fortunately, after reading [an article](http://karpathy.github.io/2019/04/25/recipe/) by Karpathy about model training recipes, I tried two weight initialization techniques.
 - initialize the bias of the last layers to the corresponding mean value of the PCA values.
 - initialize the weights of the last layers to the corresponding principal component vectors of the PCA model.
 
