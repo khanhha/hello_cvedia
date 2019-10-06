@@ -1,7 +1,5 @@
 Hi Rodrigo,
 
-Hi Rodrigo,
-
 The vision of CVEDIA about synthetic data really inspires me. From my deep learning experience, data is the key to a high-quality model. Unfortunately, achieving a good data-set that could cover many edge cases is very hard and expensive in practice. Therefore, I firmly believe that synthetic data will play a crucial role in the future of deep learning. That is the reason why I want to be a part of CVEDIA's journey.
 
 I know that every journey comes down to a good match. Therefore, to convince you that I will be a valuable addition to CVEDIA, I wrote an article to show you the deep learning challenges I tacked so far.
