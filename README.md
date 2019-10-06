@@ -142,3 +142,5 @@ However, this prevents front/side branches from fine-tuning their weights during
 # Conclusion
 
 In this note, I tried to wrap up the challenges I handled through my latest deep learning project. These challenges gave me lots of valuable lessons, which will be tremendously helpful for my future machine learning projects. I hope that it convinces you that I will be a valuable addition to the vision that CVEDIA is realizing.
+
+<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
