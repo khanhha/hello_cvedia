@@ -42,7 +42,7 @@ In this part, I will describe the challenges that I tackled during this project.
 
 To make it easier for you to follow, I classified them into two main types of challenges: the ones that relate to the data synthesis stage and the other ones about training techniques.
 
-## Data synthesis
+## Challenges about data synthesis
 
 ### Merge 3D human data-sets on the Internet.
 
