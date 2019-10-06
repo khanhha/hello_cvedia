@@ -34,7 +34,7 @@ The deep learning model described in this article is used for a virtual shopping
 
 These two segmentation maps will be then calibrated and passed to a deep learning model that predicts 50 PCA parameters that encode the 3D shape of the customer. These PCA parameters will be used to reconstruct the final 3D human mesh, as shown in the fourth stage.
 
-![](/assets/images/3dhm/2019-564ea8d3.png)
+<p align="center"><img src="/assets/images/3dhm/2019-564ea8d3.png" align=middle height=300pt/></p>
 
 # Challenges
 
@@ -49,7 +49,8 @@ To make it easier for you to follow, I classified them into two main types of ch
 In this challenge, I helped double the size of the training data from 3000 meshes to around 7000 meshes by merging different 3D human data-sets in the market. In contrast to images data-sets, combining different 3D human mesh data-sets are more complicated because of varying topology (different vertex number, triangle number, order).
 
 To tackle this challenge, I implemented a registration algorithm that aligns/deforms the meshes to the same topology. The registration algorithm is implemented in a way that takes into account 72 3D human landmarks so that all the meshes are aligned correctly, as depicted by the red and blue segments in the below figure.
-![](/assets/images/3dhm/2019-46ff3704.png)  
+
+<p align="center"><img src="/assets/images/3dhm/2019-46ff3704.png" align=middle height=500pt/></p>
 
 ### New 3D human shapes synthesis based on the PCA model (Principal component analysis).
 
@@ -67,15 +68,16 @@ To solve this problem, I apply rigging techniques to create more pose variants p
 
 However, the output meshes still fluctuate a bit. To achieve a more stable result, pose parameters need to be integrated into the model to make it more distinctive.
 
-![](/assets/images/3dhm/2019-ca754c68.png)
-![](/assets/images/3dhm/2019-d7c91d41.png)
+<p align="center"><img src="/assets/images/3dhm/2019-ca754c68.png" align=middle height=300pt/></p>
+
+<p align="center"><img src="/assets/images/3dhm/2019-d7c91d41.png" align=middle height=300pt/></p>
+
 
 ### Camera parameters
 
 Camera transformation also plays an essential role in forming the pictures. A picture taken with a camera at 1.6 meters over the ground will look different from a photo taken at 1.2 meters. Therefore, to truly reflect these variants in the data-set, I implemented a script to randomly change the camera angles/positions to make the model more robust to perspective changes in the image. The general idea of the technique is shown below. The camera on the right picture is tilted a bit upward than in the left picture.
 
-![](/assets/images/3dhm/2019-2445f9a9.png)
-
+<p align="center"><img src="/assets/images/3dhm/2019-2445f9a9.png" align=middle height=150pt/></p>
 
 ## Challenges about training
 
@@ -87,11 +89,12 @@ In the beginning, I used a single model for both front and side pictures, as dep
 
 It took me a while to find out this problem. My theory is that the model is biased toward the front silhouette, which means it just learns very little information from the side silhouette. To test this theory, I wrote code to visualize the feature maps of the model, and it turns out that most of the feature maps have similar shapes like the front silhouette.
 
-![](/assets/images/3dhm/2019-3992b938.png)
+<p align="center"><img src="/assets/images/3dhm/2019-3992b938.png" align=middle height=300pt/></p>
+
 
 To tackle this problem, I separately trained the front and side model and then trained another fusion model to combine their outputs. In other words, the front and side model serves as two feature extraction/encoders for the fusion model. The diagram of the new architecture is depicted below.
 
-![](/assets/images/3dhm/2019-59c17035.png)
+<p align="center"><img src="/assets/images/3dhm/2019-59c17035.png" align=middle height=300pt/></p>
 
 ### Two weight initialization techniques that boost accuracy
 
@@ -108,21 +111,33 @@ In the beginning, I just monitored the training through the mean square error be
 - __integrate the mesh loss__:  from the predicted PCA values, I reconstructed the corresponding 3D mesh during the training and then calculated the mean-square-error between the reconstructed mesh and the corresponding ground-truth mesh. The final loss is the average of PCA loss and mesh loss. This technique help forces the model to predict more accurate vertices instead of just PCA values.
 
 $$
-epoch0:   loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss \newline
-epoch10:  loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss \newline
-epoch50:  loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss \newline
-epoch100: loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss \newline
+epoch0:   loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss
+$$
+$$
+epoch10:  loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss
+$$
+$$
+epoch50:  loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss
+$$
+$$
+epoch100: loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss
 $$  
 
 - __dynamic weights for loss terms__: as discussed previously, the final loss is calculated as $ 0.5*PCAloss + 0.5*meshloss$.  However, it is quite intuitive that it is easier for the model to detect underlying trends in PCA values rather than in the 3D mesh vertices. This difficulty could be due to the fact that mesh representation is much more dense and complex than the PCA representation. Therefore, to make the training easier, the loss is designed to force the model to learn PCA values first and toward the end, focus more on mesh loss.
 
 $$
-epoch0:   loss = 0.9*mse{\_}pca{\_}loss + 0.1*mse{\_}mesh{\_}loss \newline
-epoch10:  loss = 0.7*mse{\_}pca{\_}loss + 0.3*mse{\_}mesh{\_}loss \newline
-epoch50:  loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss
-\newline
-epoch100: loss = 0.2*mse{\_}pca{\_}loss + 0.8*mse{\_}mesh{\_}loss \newline
+epoch0:   loss = 0.9*mse{\_}pca{\_}loss + 0.1*mse{\_}mesh{\_}loss
 $$
+$$
+epoch10:  loss = 0.7*mse{\_}pca{\_}loss + 0.3*mse{\_}mesh{\_}loss
+$$
+$$
+epoch50:  loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss
+$$
+$$
+epoch100: loss = 0.2*mse{\_}pca{\_}loss + 0.8*mse{\_}mesh{\_}loss
+$$
+
 
 - __integrate silhouette re-projection loss__: the ultimate target of the training is finding a mesh that best explains the shape of the input silhouettes. Therefore, the best monitoring strategies is comparing the re-projection silhouettes of the predicted mesh with the input silhouettes. This is the most challenging loss term that I implemented in this project because it requires doing a rending in real-time with a correct projection matrix to get the re-projected silhouettes. The idea is outlined below with the loss equation
 
@@ -130,7 +145,7 @@ $$
   loss = 0.5 *pca{\_}mesh{\_}loss + 0.5*sil{\_}reproj{\_}iou{\_}loss
 $$
 
-![](/assets/images/3dhm/2019-db83accd.png)
+<p align="center"><img src="/assets/images/3dhm/2019-db83accd.png" align=middle height=300pt/></p>
 
 
 ### Use lower learning rates for earlier layers help improve accuracy.
