@@ -121,23 +121,7 @@ epoch0:   loss = 0.9*mse{\_}pca{\_}loss + 0.1*mse{\_}mesh{\_}loss \\
 epoch10:  loss = 0.7*mse{\_}pca{\_}loss + 0.3*mse{\_}mesh{\_}loss \\
 epoch50:  loss = 0.5*mse{\_}pca{\_}loss + 0.5*mse{\_}mesh{\_}loss \\
 epoch100: loss = 0.2*mse{\_}pca{\_}loss + 0.8*mse{\_}mesh{\_}loss \\
-$$  <script type="text/javascript" async
-	src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML">
-</script>
-
-<script type="text/x-mathjax-config">
-   MathJax.Hub.Config({
-     extensions: ["tex2jax.js"],
-     jax: ["input/TeX", "output/HTML-CSS"],
-     tex2jax: {
-       inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-       displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-       processEscapes: true
-     },
-     "HTML-CSS": { availableFonts: ["TeX"] }
-   });
-</script>
-
+$$
 
 - __integrate silhouette re-projection loss__: the ultimate target of the training is finding a mesh that best explains the shape of the input silhouettes. Therefore, the best monitoring strategies is comparing the re-projection silhouettes of the predicted mesh with the input silhouettes. This is the most challenging loss term that I implemented in this project because it requires doing a rending in real-time with a correct projection matrix to get the re-projected silhouettes. The idea is outlined below with the loss equation
 
